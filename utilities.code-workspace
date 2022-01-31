@@ -1,0 +1,78 @@
+{
+    "folders": [
+		{
+			"path":"."
+		}
+        
+    ],
+    "settings": {
+		"python.pythonPath": "/home/facerec/anaconda3/envs/base/bin/python",														
+		"python.languageServer": "Pylance",
+
+		"python.formatting.provider": "black",
+		"python.analysis.completeFunctionParens":true,
+		
+		"files.autoSave": "onFocusChange",
+		"diffEditor.wordWrap": "inherit",
+		"editor.wordWrap": "wordWrapColumn",
+		"editor.wordWrapColumn": 160,
+		"editor.foldingStrategy": "auto",
+		"window.zoomLevel": -1,
+
+
+		// Themes and colors
+		"workbench.colorCustomizations": {
+			// "window.activeBorder": "#1e8425",
+			// "window.inactiveBorder": "#7b3131",
+			"[Darcula Pycharm with Dark GUI]": {
+				"titleBar.activeBackground": "#ff7b00b6",
+				"titleBar.inactiveBackground": "#ff7b00b6",
+
+			}
+		},		
+		"workbench.preferredDarkColorTheme": "Darcula Pycharm with Dark GUI",
+		"workbench.preferredLightColorTheme": "Darcula Pycharm with Dark GUI",
+		"workbench.colorTheme": "Darcula Pycharm with Dark GUI",
+		
+		"window.autoDetectColorScheme": true,
+		"window.title": "${dirty}${remoteName}${separator}${folderName}",
+
+
+		
+		//SVG images
+		"svgviewer.transparencygrid": true, // Show Transparency Grid	
+		"svgviewer.enableautopreview": true, // Open or not open the preview screen automatically
+		"svgviewer.previewcolumn": "Active", // How to open the screen (vscode.ViewColumn)
+		"svgviewer.showzoominout": true, // Show zoom in/out button in preview windows
+		"editor.matchBrackets":"never",
+		
+		//Bracket colorizer
+		"bracket-pair-colorizer-2.forceUniqueOpeningColor":true,
+		"bracket-pair-colorizer-2.forceIterationColorCycle":true,
+		"bracket-pair-colorizer-2.colorMode":"Consecutive",
+		"bracket-pair-colorizer-2.activeScopeCSS":[
+			"borderStyle : solid",
+			"borderWidth : 1px",
+			"borderColor : {color}",
+			"backgroundColor : {color}", 
+			"opacity: 0.25",
+		],
+		"bracket-pair-colorizer-2.highlightActiveScope":true,
+		"bracket-pair-colorizer-2.showBracketsInGutter":true,
+
+		"bracket-pair-colorizer-2.colors": [
+			// "Gold",
+			// "Orchid",
+			// "LightSkyBlue",
+			// "BurlyWood",
+			"CadetBlue",
+			"DarkSeaGreen",
+			"Plum",
+			"Peru",
+			// "",
+
+		],
+
+
+	}
+}
