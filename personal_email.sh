@@ -1,5 +1,5 @@
 # USAGE: bash personal_email.sh -s=[SUBJECT] -b=[BODY] -a=[ATTACHMENT]
-PERSONAL_EMAIL="marcograca89@gmail.com"
+echo $PERSONAL_EMAIL # Email saved as evironment variable
 SUBJECT="Subject"
 BODY="Body"
 
