@@ -14,7 +14,6 @@ gnome-terminal --geometry=140x11-0+900 --title="Monitoring CPU" -- bash -c "ssh 
 
 # Open gpustat on remote
 gnome-terminal --geometry=140x3-0+670 --title="Monitoring GPU" -- bash -c "ssh -Xt $remote<<EOT
-conda activate i3d; 
 gpustat -ucFP --watch --color;
 EOT;exec bash"
 
