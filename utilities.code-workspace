@@ -17,7 +17,7 @@
 		"editor.wordWrap": "wordWrapColumn",
 		"editor.wordWrapColumn": 160,
 		"editor.foldingStrategy": "auto",
-		"window.zoomLevel": 1,
+		"window.zoomLevel": -1,
 
 
 		// Themes and colors
