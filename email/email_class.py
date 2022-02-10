@@ -79,6 +79,7 @@ class Email:
 
 
 if __name__ == '__main__':
-    Email().send(subject='this is the subject', body='this is the body', attachments=['some_file.txt', 'not_a_file.txt'])
+    ### EMAIL USAGE
+    Email().send(subject='this is the subject', body='this is the body', attachments=['some_file.txt', 'not_a_file.txt']) # or
     # Email()(subject='this is the subject', body='this is the body', attachments=['some_file.txt', 'not_a_file.txt'])
 

@@ -4,20 +4,29 @@ import traceback as tb
 
 from email_class import Email
 
-try:
-    ts = time.time()
+
+def email_notification(func):
+    def wrapper(*args, **kwargs): 
+        try:
+            func(*args, **kwargs)
+            
+        except:
+            e = tb.format_exc()
+            Email()(subject='Error occured !', body=f'Time: {datetime.today().strftime("%Y-%m-%d %Hh%Mm%Ss")}\n\nERROR:\n\n{e}\n-----')
+            print('ERROR:\n\n',e)
+        finally:
+            print('DONE!')
+            
+    return wrapper 
     
-    ###### START ######
+    
+
+@email_notification
+def example_func(a, b=99):
     for _ in range(10):
         time.sleep(.1)
-    ####### END #######
+        
+    print(a, b)
 
-    Email()(subject='Done !', body=f'Took {time.time()-ts:3.2f} seconds', attachments=['some_file.txt', 'not_a_file.txt'])
-    
-except:
-    e = tb.format_exc()
-    Email()(subject='Error occured !', body=f'Time: {datetime.today().strftime("%Y-%m-%d %Hh%Mm%Ss")}\n\nERROR:\n\n{e}\n-----')
-    print('ERROR:\n\n',e)
-finally:
-    print('DONE!')
-
+if __name__ == '__main__':
+    example_func(123, b=54)
