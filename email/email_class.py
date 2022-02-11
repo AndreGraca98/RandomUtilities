@@ -14,12 +14,12 @@ class Email:
     
         Sends an email with attachments from localhost to a receiver email. """
         
-    def __init__(self, smtp_server: str="localhost:25", receiver_email: str='marcograca89@gmail.com', sender_email: str=Path.home().stem) -> None:
+    def __init__(self, smtp_server: str="localhost:25", receiver_email: str='your-email@gmail.com', sender_email: str=Path.home().stem) -> None:
         """ Initialize email class
         
             Args:
                 smtp_server (str, optional): Email server. Defaults to "localhost:25".
-                receiver_email (str, optional): Your receiver email. Defaults to 'marcograca89@gmail.com'.
+                receiver_email (str, optional): Your receiver email. Defaults to 'your-email@gmail.com'.
                 sender_email (str, optional): Local sender user name. Defaults to Path.home().stem. """
         self.smtp_server = smtp_server 
         self.receiver_email = receiver_email 
@@ -57,6 +57,10 @@ class Email:
         self.message.attach(MIMEText(body, "plain"))
 
     def append_attachment_to_message(self, filename: str):
+        """ Appends attachment to the message
+
+            Args:
+                filename (str): path to the filename -> /path-to-the-file/filename.suffix        """
         with open(filename, "rb") as attachment:  # text file
             part = MIMEBase("application", "octet-stream", )
             part.set_payload(attachment.read())
@@ -66,6 +70,8 @@ class Email:
             self.message.attach(part)
             
     def connect_server_and_send_email(self):
+        if self.message["To"] == 'your-email@gmail.com':
+            raise ValueError('Must change the receiver email to a different email: your-email@gmail.com')
         with smtplib.SMTP(self.smtp_server) as server:
             server.sendmail(self.message["From"], self.message["To"], self.message.as_string())
             
@@ -75,11 +81,13 @@ class Email:
         self.cleannup()
         
     def cleannup(self):
+        """ TODO:  """
         pass
 
 
 if __name__ == '__main__':
     ### EMAIL USAGE
-    Email().send(subject='this is the subject', body='this is the body', attachments=['some_file.txt', 'not_a_file.txt']) # or
-    # Email()(subject='this is the subject', body='this is the body', attachments=['some_file.txt', 'not_a_file.txt'])
+    Email().send(subject='this is the subject', body='this is the body', attachments=['some_file.txt', 'not_a_file.txt']) 
+    # OR
+    Email(receiver_email='a-different-email@gmail.com', sender_email='the name that will appear before the computer name')(subject='this is the subject', body='this is the body', attachments=['some_file.txt', 'not_a_file.txt'])
 
