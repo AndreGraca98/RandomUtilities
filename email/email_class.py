@@ -5,7 +5,7 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
-from typing import Tuple
+from typing import Tuple, Union
 
 
 
@@ -29,7 +29,7 @@ class Email:
         """ Sends an email with specified subject, body and attachments """
         self.send(**kwds)
         
-    def create_message(self, subject: str, body: str, attachments: Tuple[str]):
+    def create_message(self, subject: str, body: str, attachments: Union[Tuple[str], str]):
         self.message = MIMEMultipart()
         self.message["From"] = self.sender_email
         self.message["To"] = self.receiver_email
@@ -47,7 +47,7 @@ class Email:
                         
             elif isinstance(attachments, str):
                 if os.path.isfile(attachments): # File exosts
-                    self.append_attachment_to_message(file)
+                    self.append_attachment_to_message(attachments)
                 else:
                     body += f'\n\nFile: {attachments} , does not exist'
                     
@@ -89,5 +89,5 @@ if __name__ == '__main__':
     ### EMAIL USAGE
     Email().send(subject='this is the subject', body='this is the body', attachments=['some_file.txt', 'not_a_file.txt']) 
     # OR
-    Email(receiver_email='a-different-email@gmail.com', sender_email='the name that will appear before the computer name')(subject='this is the subject', body='this is the body', attachments=['some_file.txt', 'not_a_file.txt'])
+    Email(receiver_email='a-different-email@gmail.com', sender_email='the name that will appear before the computer name')(subject='this is the subject', body='this is the body', attachments='not_a_file.txt')
 
