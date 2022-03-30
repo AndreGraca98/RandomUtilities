@@ -7,7 +7,7 @@ from cryptography.fernet import Fernet
 
 
 def generate_key():
-    if not os.path.file(f"{Path.home()}/.fernet_key"):
+    if os.path.isfile(f"{Path.home()}/.fernet_key"):
         print(f'Key already exists in {Path.home()/".fernet_key"}')
         return
     
@@ -35,7 +35,7 @@ def decrypt(encMessage: str, key: bytes):
     return decMessage
 
 
-def create_credentials_csv(email_list: List[str]=None, pwd_list: List[str]=None, force=False, path: Path = Path.cwd() / "tools"):
+def create_credentials_csv(email_list: List[str]=None, pwd_list: List[str]=None, force=False, path: Path = Path.cwd() / "email_tools"):
     """ Creates encrypted file with emails and respective passwords
 
     Args:
@@ -46,7 +46,11 @@ def create_credentials_csv(email_list: List[str]=None, pwd_list: List[str]=None,
     """
     base_dir = path if __name__ != '__main__' else Path('')
     if not force:
-        assert not os.path.isfile(str(base_dir / "credentials.csv")), "File credentials.csv already exists"
+        if os.path.isfile(str(base_dir / "credentials.csv")):
+            print("File credentials.csv already exists")
+            return
+        # assert not os.path.isfile(str(base_dir / "credentials.csv")), "File credentials.csv already exists"
+        
     assert len(email_list)>0 and len(email_list) == len(pwd_list), f'Email and Password list must have same number of elements greater than zero! Email: {len(email_list)} ; Password: {len(pwd_list)}'
     
     key = get_key()
@@ -60,7 +64,7 @@ def create_credentials_csv(email_list: List[str]=None, pwd_list: List[str]=None,
     df.to_csv(str(base_dir / "credentials.csv"), sep=" ")#, index_label="index")  # , index=None)
 
 
-def get_data(domain: str, column_name: str, path: Path = Path.cwd() / "tools") -> str:
+def get_data(domain: str, column_name: str, path: Path = Path.cwd() / "email_tools") -> str:
     """ Retrieves decrypted data from emails/passwords dataframe
 
     Args:
@@ -98,7 +102,7 @@ def get_pwd(domain: str):
 def get_credentials(domain: str):
     return get_email(domain=domain), get_pwd(domain=domain)
 
-def get_all_credentials(path: Path = Path.cwd() / "tools"):
+def get_all_credentials(path: Path = Path.cwd() / "email_tools"):
     base_dir = path if __name__ != '__main__' else Path('')
     
     df = pd.read_csv(str(base_dir / "credentials.csv"), sep=" ")

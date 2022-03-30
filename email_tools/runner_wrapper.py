@@ -5,7 +5,7 @@ from datetime import datetime
 if __name__ == '__main__':
     from email_class import Email
 else:
-    from tools.email_class import Email
+    from email_tools.email_class import Email
 
 
 def email_notification(func):

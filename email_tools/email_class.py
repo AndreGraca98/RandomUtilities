@@ -11,7 +11,7 @@ from typing import Tuple, Union
 if __name__ == '__main__':
     from encryption import get_email, get_pwd
 else:
-    from tools.encryption import get_email, get_pwd
+    from email_tools.encryption import get_email, get_pwd
 
 
 class Email:
@@ -97,7 +97,7 @@ class Email:
 
 if __name__ == "__main__":
     ### EMAIL USAGE
-    Email().send(subject="subject", body="this is the body", attachments=["credentials.csv", "some_file.txt", "not_a_file.txt"])  # or
+    Email().send(subject="subject", body="this is the body", attachments=["email_tools/credentials.csv", "email_tools/some_file.txt", "email_tools/not_a_file.txt"])  # or
     # Email()(subject='this is the subject', body='this is the body', attachments=['some_file.txt', 'not_a_file.txt'])
 
     pass

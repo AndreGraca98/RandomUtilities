@@ -1,22 +1,24 @@
 import time
-from tools.email_class import Email
-from tools.encryption import create_credentials_csv, generate_key, get_all_credentials, get_credentials
-from tools.runner_wrapper import email_notification
+from email_tools import Email
+from email_tools import create_credentials_csv, generate_key, get_all_credentials, get_credentials
+from email_tools import email_notification
 
 
 if __name__ == '__main__':
     generate_key()
     email=input('Enter sender email ["user@isr.uc.pt"]: '); pwd=input('Enter sender pwd ["password"]: ')
-    create_credentials_csv([email], [pwd], force=True)
+    create_credentials_csv([email], [pwd], force=False)
     
     print( get_all_credentials() )
     # print( get_credentials('domain') )
     
-    Email(sender_email=email, sender_pwd=pwd).send(attachments='tools/some_file.txt')
+    email, pwd = get_credentials('isr')
+
+    Email(sender_email=email, sender_pwd=pwd).send(attachments=['email_tools/credentials.csv','email_tools/some_file.txt'])
     
     @email_notification
     def function():
-        print(f'Press Ctrl+C to send an error message to the email added above {email}')
+        print(f'Press Ctrl+C to send an error message to {email}')
         for _ in range(10):
             time.sleep(1)
             
