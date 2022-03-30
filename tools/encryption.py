@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import List
 
 import pandas as pd
 from cryptography.fernet import Fernet
@@ -30,30 +31,56 @@ def decrypt(encMessage: str, key: bytes):
     return decMessage
 
 
-def create_credentials_csv(credentials_mid_path: str = "RandomUtilities/tools"):
-    assert not os.path.isfile(str(Path.home() / credentials_mid_path / "credentials.csv")), "File credentials.csv already exists"
-    # Comment the line above if you are sure you want to create a new credentials file
+def create_credentials_csv(email_list: List[str]=None, pwd_list: List[str]=None, force=False, path: Path = Path.cwd() / "tools"):
+    """ Creates encrypted file with emails and respective passwords
+
+    Args:
+        email_list (List[str], optional): Email list. Defaults to None.
+        pwd_list (List[str], optional): Password list. Defaults to None.
+        force (bool, optional): Force new file creation. Defaults to False.
+        path (Path, optional): Base directory. Defaults to Path.cwd()/"tools".
+    """
+    base_dir = path if __name__ != '__main__' else Path('')
+    if not force:
+        assert not os.path.isfile(str(base_dir / "credentials.csv")), "File credentials.csv already exists"
+    assert len(email_list)>0 and len(email_list) == len(pwd_list), f'Email and Password list must have same number of elements greater than zero! Email: {len(email_list)} ; Password: {len(pwd_list)}'
+    
     key = get_key()
 
-    data = [
-        [encrypt("email@domain", key), encrypt("password", key)],
-        [encrypt("email@domain", key), encrypt("password", key)],
-        [encrypt("email@domain", key), encrypt("password", key)],
-    ]
-    df = pd.DataFrame(data, columns=["email", "password"], dtype=str)
-    df.set_index(pd.Index([decrypt(d[0], key).split("@")[1].split(".")[0] for d in (data)]), inplace=True)
-    df.to_csv(str(Path.home() / credentials_mid_path / "credentials.csv"), sep=" ", index_label="index")  # , index=None)
+    data = [[email.split("@")[1].split(".")[0], encrypt(email, key), encrypt(pwd, key)] for email, pwd in zip(email_list, pwd_list) ]
+
+    df = pd.DataFrame(data, columns=["domain", "email", "password"], dtype=str)
+    df.set_index(['domain', df.groupby(['domain']).cumcount()], inplace=True)
+    
+    # print(df)
+    df.to_csv(str(base_dir / "credentials.csv"), sep=" ")#, index_label="index")  # , index=None)
 
 
-def get_data(domain: str, column_name: str, credentials_mid_path: str = "RandomUtilities/tools"):
+def get_data(domain: str, column_name: str, path: Path = Path.cwd() / "tools") -> str:
+    """ Retrieves decrypted data from emails/passwords dataframe
+
+    Args:
+        domain (str): email domain. Can be split with : to access different values in the dataset 
+        column_name (str): email or password
+        path (Path, optional): Base directory. Defaults to Path.cwd()/"tools".
+
+    Returns:
+        str: decrypted data from specified column
+    """
     assert column_name in ["email", "password"], f"Column name {column_name} does not exist. Choose from [password, email]"
+    base_dir = path if __name__ != '__main__' else Path('')
 
     key = get_key()
-    df = pd.read_csv(str(Path.home() / credentials_mid_path / "credentials.csv"), sep=" ", index_col="index")  # , sep=" ")
+    df = pd.read_csv(str(base_dir / "credentials.csv"), sep=" ", index_col=[0,1])  # , sep=" ")
 
-    assert domain in df.index, f"Domain '{domain}' does not exist. Choose from {df.index.values}"
-
-    return decrypt(eval(df.loc[domain, column_name]), key)
+    # assert domain in df.index, f"Domain '{domain}' does not exist. Choose from {df.index.values}"
+    if len(domain.split(':')) > 1:
+        dom, n = domain.split(':')
+        index_ = (dom, int(n))
+    else:
+        index_ = (domain, 0)
+               
+    return decrypt(eval(df.loc[index_, column_name]), key)
 
 
 def get_email(domain: str):
@@ -67,14 +94,27 @@ def get_pwd(domain: str):
 def get_credentials(domain: str):
     return get_email(domain=domain), get_pwd(domain=domain)
 
+def get_all_credentials(path: Path = Path.cwd() / "tools"):
+    base_dir = path if __name__ != '__main__' else Path('')
+    
+    df = pd.read_csv(str(base_dir / "credentials.csv"), sep=" ")
+    key = get_key()
+    emails = [decrypt(eval(e), key=key) for e in df['email'].values.tolist()]
+    passwords = [decrypt(eval(p), key=key) for p in df['password'].values.tolist()]
+
+    return list(zip(emails, passwords)), df.domain.values.tolist()
 
 if __name__ == "__main__":
     # generate_key()
-    # create_credentials_csv()
-
+    
     # print(get_credentials("isr"))
-    # print(get_credentials("sapo"))
-    # print(get_credentials("gmail"))
-    # print(get_credentials("google"))
+    
+    # create_credentials_csv(["email@domain", 'another.email@domain.pt', 'testt@uc.pt'], ["password", '1234', 'pwd'], force=True)
+
+    # print(get_credentials("domain"))
+    # print(get_credentials("domain:1"))
+    # print(get_credentials("uc"))
+    
+    print(get_all_credentials())
 
     pass
