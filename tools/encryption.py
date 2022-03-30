@@ -7,6 +7,10 @@ from cryptography.fernet import Fernet
 
 
 def generate_key():
+    if not os.path.file(f"{Path.home()}/.fernet_key"):
+        print(f'Key already exists in {Path.home()/".fernet_key"}')
+        return
+    
     key = Fernet.generate_key()
     with open(f"{Path.home()}/.fernet_key", "w") as f:
         f.write(str(key))
