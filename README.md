@@ -4,6 +4,8 @@ Random utility files
 
 ## Usage
 
+Assuming user in `RandomUtilities/`
+
 ```bash
 cd venv
 source virtual_env.sh
