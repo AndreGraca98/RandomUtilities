@@ -1,7 +1,5 @@
 import time
-from email_tools import Email
-from email_tools import create_credentials_csv, generate_key, get_all_credentials, get_credentials
-from email_tools import email_notification
+from email_tools import Email, email_notification, generate_key, create_credentials_csv, get_all_credentials, get_credentials
 
 
 if __name__ == '__main__':
@@ -10,7 +8,6 @@ if __name__ == '__main__':
     create_credentials_csv([email], [pwd], force=False)
     
     print( get_all_credentials() )
-    # print( get_credentials('domain') )
     
     email, pwd = get_credentials('isr')
 
