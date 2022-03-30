@@ -4,7 +4,7 @@ Random utility files
 
 ## Usage
 
-Assuming user in `RandomUtilities/`
+Assuming user is in `RandomUtilities/`
 
 ```bash
 cd venv
@@ -21,8 +21,10 @@ source virtual_env.sh
 - [x]  `tools/runner_wrapper.py` :: wrapper to send an email notification if error occurs
 - [x]  `tools/encryption.py` :: encrypt and decrypt data using Fernet encryption. Create and retrieve encrypted credentials
 
-## Test file Usage
+## Test email tools Usage
+
+Assuming user is in `RandomUtilities/`
 
 ```bash
-python test_file.py
+python email_test_test_file.py
 ```
