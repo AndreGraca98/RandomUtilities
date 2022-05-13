@@ -1,5 +1,7 @@
+
+*.ipynb
+
+credentials/credentials.csv
+
 __pycache__
-
-tools/credentials.csv
-
-notebook*
+*.egg-info
